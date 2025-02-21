@@ -216,6 +216,9 @@ public class Board {
                             puzzles[firstPuzzleIndex].rotate90();
                         } else {
                             puzzles[firstPuzzleIndex].reset();
+                            if (firstPuzzleIndex == this.P - 1) {
+                                fail = true;
+                            }
                             break; // Semua orientasi sudah dicoba
                         }
 
@@ -242,6 +245,9 @@ public class Board {
                                         puzzles[i].rotate90();
                                     } else {
                                         puzzles[i].reset();
+                                        if (firstPuzzleIndex == this.P - 1) {
+                                            fail = true;
+                                        }
                                         break;
                                     }
                                 }
@@ -280,6 +286,9 @@ public class Board {
                         puzzles[tempId].rotate90();
                     } else {
                         puzzles[tempId].reset();
+                        if (tempId == this.P - 1) {
+                            fail = true;
+                        }
                         break;
                     }
 
@@ -304,6 +313,9 @@ public class Board {
                                     puzzles[newId].rotate90();
                                 } else {
                                     puzzles[newId].reset();
+                                    if (newId == this.P - 1) {
+                                        fail = true;
+                                    }
                                     break;
                                 }
                             }
