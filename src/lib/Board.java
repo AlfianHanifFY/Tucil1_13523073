@@ -236,6 +236,7 @@ public class Board {
                             count++;
                             if (!puzzles[i].used) {
                                 while (!addPuzzle(puzzles[i]) && !foundNewFirst) {
+
                                     count++;
                                     // el orientasi
                                     if (puzzles[i].rotateAmount == 4) {
@@ -324,7 +325,7 @@ public class Board {
                     }
                 }
             }
-
+            System.out.println();
         } while (!isFull() && !fail);
 
         if (fail || isFail(puzzles)) {
