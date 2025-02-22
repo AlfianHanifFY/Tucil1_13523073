@@ -53,9 +53,9 @@ public class Board {
                 char ch = this.map[i][j];
                 if (ch >= 'A' && ch <= 'Z') {
                     int index = ch - 'A';
-                    System.out.printf("%s%s%s", colors[index], ch, reset);
+                    System.out.printf("%s%s%s ", colors[index], ch, reset);
                 } else {
-                    System.out.printf("%s", ch);
+                    System.out.printf("%s ", ch);
                 }
             }
             System.out.println();
@@ -172,8 +172,6 @@ public class Board {
 
             // coba tambah puzzle
             for (int i = 0; i < puzzles.length; i++) {
-                count++;
-
                 if (!puzzles[i].used) {
                     while (!addPuzzle(puzzles[i]) && !status) {
                         count++;
@@ -194,138 +192,77 @@ public class Board {
                         placedPuzzle[id++] = i;
                         break;
                     }
+                } else {
+                    count++;
                 }
             }
 
             // backtrack kalo gagal menambah puzzle
             while (!status) {
                 // kondisi kalo puzzle pertama di backtrack
-                if (id == 0) {
 
-                    int firstPuzzleIndex = placedPuzzle[0];
-                    clearPuzzle(puzzles[firstPuzzleIndex].name);
-                    puzzles[firstPuzzleIndex].used = false;
-
-                    boolean foundNewFirst = false;
-
-                    // Coba semua kemungkinan orientasi sebelum mengganti puzzle pertama
-                    while (!foundNewFirst) {
-                        count++;
-                        if (puzzles[firstPuzzleIndex].rotateAmount == 4) {
-                            puzzles[firstPuzzleIndex].mirror();
-                        } else if (puzzles[firstPuzzleIndex].rotateAmount < 8) {
-                            puzzles[firstPuzzleIndex].rotate90();
-                        } else {
-                            puzzles[firstPuzzleIndex].reset();
-                            System.out.println("aa");
-                            break; // Semua orientasi sudah dicoba
-                        }
-
-                        if (addPuzzle(puzzles[firstPuzzleIndex])) {
-                            placedPuzzle[0] = firstPuzzleIndex;
-                            id = 1;
-                            foundNewFirst = true;
-                            status = true;
-                            break;
-                        }
-                    }
-
-                    // kalo ga bisa, ganti puzzle
-                    if (!foundNewFirst) {
-                        for (int i = firstPuzzleIndex + 1; i < puzzles.length; i++) {
-                            count++;
-                            if (!puzzles[i].used) {
-                                while (!addPuzzle(puzzles[i]) && !foundNewFirst) {
-
-                                    count++;
-                                    // el orientasi
-                                    if (puzzles[i].rotateAmount == 4) {
-                                        puzzles[i].mirror();
-                                    } else if (puzzles[i].rotateAmount < 8) {
-                                        puzzles[i].rotate90();
-                                    } else {
-                                        puzzles[i].reset();
-                                        break;
-                                    }
-                                }
-
-                                if (puzzles[i].used) {
-                                    placedPuzzle[0] = i;
-                                    id = 1;
-                                    foundNewFirst = true;
-                                    status = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    if (!foundNewFirst) {
-                        fail = true;
-                    }
-                    break;
-                } else {
-                    // hapus puzzle terakhir
+                // hapus puzzle terakhir
+                if (id > 0) {
                     id--;
-                    int tempId = placedPuzzle[id];
+                }
+                int tempId = placedPuzzle[id];
+                count++;
+                clearPuzzle(puzzles[tempId].name);
+                puzzles[tempId].used = false;
+
+                boolean newPlacementFound = false;
+
+                // Coba orientasi lain sebelum ganti puzzle
+                while (!newPlacementFound) {
                     count++;
-                    clearPuzzle(puzzles[tempId].name);
-                    puzzles[tempId].used = false;
-
-                    boolean newPlacementFound = false;
-
-                    // Coba orientasi lain sebelum ganti puzzle
-                    while (!newPlacementFound) {
-                        count++;
-                        if (puzzles[tempId].rotateAmount == 4) {
-                            puzzles[tempId].mirror();
-                        } else if (puzzles[tempId].rotateAmount < 8) {
-                            puzzles[tempId].rotate90();
-                        } else {
-                            puzzles[tempId].reset();
-                            if (id == 0 && tempId == this.P - 1) {
-                                // here cok
-                                fail = true;
-                            }
-                            break;
+                    if (puzzles[tempId].rotateAmount == 4) {
+                        puzzles[tempId].mirror();
+                    } else if (puzzles[tempId].rotateAmount < 8) {
+                        puzzles[tempId].rotate90();
+                    } else {
+                        puzzles[tempId].reset();
+                        if (id == 0 && tempId == this.P - 1) {
+                            // here cok
+                            fail = true;
                         }
-
-                        if (addPuzzle(puzzles[tempId])) {
-                            placedPuzzle[id++] = tempId;
-                            newPlacementFound = true;
-                            status = true;
-                            break;
-                        }
+                        break;
                     }
 
-                    // Kalo semua orientasi gagal, coba puzzle berikutnya
-                    if (!newPlacementFound) {
-                        for (int newId = tempId + 1; newId < puzzles.length; newId++) {
-                            count++;
-                            if (!puzzles[newId].used) {
-                                while (!addPuzzle(puzzles[newId]) && !newPlacementFound) {
-                                    count++;
-                                    if (puzzles[newId].rotateAmount == 4) {
-                                        puzzles[newId].mirror();
-                                    } else if (puzzles[newId].rotateAmount < 8) {
-                                        puzzles[newId].rotate90();
-                                    } else {
-                                        puzzles[newId].reset();
-                                        break;
-                                    }
-                                }
+                    if (addPuzzle(puzzles[tempId])) {
+                        placedPuzzle[id++] = tempId;
+                        newPlacementFound = true;
+                        status = true;
+                        break;
+                    }
+                }
 
-                                if (puzzles[newId].used) {
-                                    placedPuzzle[id++] = newId;
-                                    newPlacementFound = true;
-                                    status = true;
+                // Kalo semua orientasi gagal, coba puzzle berikutnya
+                if (!newPlacementFound) {
+                    for (int newId = tempId + 1; newId < puzzles.length; newId++) {
+                        if (!puzzles[newId].used) {
+                            while (!addPuzzle(puzzles[newId]) && !newPlacementFound) {
+                                count++;
+                                if (puzzles[newId].rotateAmount == 4) {
+                                    puzzles[newId].mirror();
+                                } else if (puzzles[newId].rotateAmount < 8) {
+                                    puzzles[newId].rotate90();
+                                } else {
+                                    puzzles[newId].reset();
                                     break;
                                 }
+                            }
+
+                            if (puzzles[newId].used) {
+                                placedPuzzle[id++] = newId;
+                                newPlacementFound = true;
+                                status = true;
+                                break;
                             }
                         }
                     }
                 }
+
             }
-            System.out.println();
         } while (!isFull() && !fail);
 
         if (fail || isFail(puzzles)) {
