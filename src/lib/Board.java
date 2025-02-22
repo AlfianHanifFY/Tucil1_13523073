@@ -201,6 +201,7 @@ public class Board {
             while (!status) {
                 // kondisi kalo puzzle pertama di backtrack
                 if (id == 0) {
+
                     int firstPuzzleIndex = placedPuzzle[0];
                     clearPuzzle(puzzles[firstPuzzleIndex].name);
                     puzzles[firstPuzzleIndex].used = false;
@@ -216,9 +217,7 @@ public class Board {
                             puzzles[firstPuzzleIndex].rotate90();
                         } else {
                             puzzles[firstPuzzleIndex].reset();
-                            if (firstPuzzleIndex == this.P - 1) {
-                                fail = true;
-                            }
+                            System.out.println("aa");
                             break; // Semua orientasi sudah dicoba
                         }
 
@@ -245,9 +244,6 @@ public class Board {
                                         puzzles[i].rotate90();
                                     } else {
                                         puzzles[i].reset();
-                                        if (firstPuzzleIndex == this.P - 1) {
-                                            fail = true;
-                                        }
                                         break;
                                     }
                                 }
@@ -266,70 +262,69 @@ public class Board {
                         fail = true;
                     }
                     break;
-                }
-
-                // hapus puzzle terakhir
-                id--;
-                int tempId = placedPuzzle[id];
-                count++;
-                clearPuzzle(puzzles[tempId].name);
-                puzzles[tempId].used = false;
-
-                boolean newPlacementFound = false;
-
-                // Coba orientasi lain sebelum ganti puzzle
-                while (!newPlacementFound) {
+                } else {
+                    // hapus puzzle terakhir
+                    id--;
+                    int tempId = placedPuzzle[id];
                     count++;
-                    if (puzzles[tempId].rotateAmount == 4) {
-                        puzzles[tempId].mirror();
-                    } else if (puzzles[tempId].rotateAmount < 8) {
-                        puzzles[tempId].rotate90();
-                    } else {
-                        puzzles[tempId].reset();
-                        if (tempId == this.P - 1) {
-                            fail = true;
-                        }
-                        break;
-                    }
+                    clearPuzzle(puzzles[tempId].name);
+                    puzzles[tempId].used = false;
 
-                    if (addPuzzle(puzzles[tempId])) {
-                        placedPuzzle[id++] = tempId;
-                        newPlacementFound = true;
-                        status = true;
-                        break;
-                    }
-                }
+                    boolean newPlacementFound = false;
 
-                // Kalo semua orientasi gagal, coba puzzle berikutnya
-                if (!newPlacementFound) {
-                    for (int newId = tempId + 1; newId < puzzles.length; newId++) {
+                    // Coba orientasi lain sebelum ganti puzzle
+                    while (!newPlacementFound) {
                         count++;
-                        if (!puzzles[newId].used) {
-                            while (!addPuzzle(puzzles[newId]) && !newPlacementFound) {
-                                count++;
-                                if (puzzles[newId].rotateAmount == 4) {
-                                    puzzles[newId].mirror();
-                                } else if (puzzles[newId].rotateAmount < 8) {
-                                    puzzles[newId].rotate90();
-                                } else {
-                                    puzzles[newId].reset();
-                                    if (newId == this.P - 1) {
-                                        fail = true;
+                        if (puzzles[tempId].rotateAmount == 4) {
+                            puzzles[tempId].mirror();
+                        } else if (puzzles[tempId].rotateAmount < 8) {
+                            puzzles[tempId].rotate90();
+                        } else {
+                            puzzles[tempId].reset();
+                            if (id == 0 && tempId == this.P - 1) {
+                                // here cok
+                                fail = true;
+                            }
+                            break;
+                        }
+
+                        if (addPuzzle(puzzles[tempId])) {
+                            placedPuzzle[id++] = tempId;
+                            newPlacementFound = true;
+                            status = true;
+                            break;
+                        }
+                    }
+
+                    // Kalo semua orientasi gagal, coba puzzle berikutnya
+                    if (!newPlacementFound) {
+                        for (int newId = tempId + 1; newId < puzzles.length; newId++) {
+                            count++;
+                            if (!puzzles[newId].used) {
+                                while (!addPuzzle(puzzles[newId]) && !newPlacementFound) {
+                                    count++;
+                                    if (puzzles[newId].rotateAmount == 4) {
+                                        puzzles[newId].mirror();
+                                    } else if (puzzles[newId].rotateAmount < 8) {
+                                        puzzles[newId].rotate90();
+                                    } else {
+                                        puzzles[newId].reset();
+                                        break;
                                     }
+                                }
+
+                                if (puzzles[newId].used) {
+                                    placedPuzzle[id++] = newId;
+                                    newPlacementFound = true;
+                                    status = true;
                                     break;
                                 }
-                            }
-
-                            if (puzzles[newId].used) {
-                                placedPuzzle[id++] = newId;
-                                newPlacementFound = true;
-                                status = true;
-                                break;
                             }
                         }
                     }
                 }
             }
+
         } while (!isFull() && !fail);
 
         if (fail || isFail(puzzles)) {

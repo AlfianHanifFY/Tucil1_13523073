@@ -77,7 +77,7 @@ public class IO {
         fileScanner.nextLine(); // Skip first line (M N amount)
         fileScanner.nextLine(); // Skip board type
 
-        int size = Math.max(M, N);
+        int size = Math.max(M * N, M * N);
 
         String line = null;
 
