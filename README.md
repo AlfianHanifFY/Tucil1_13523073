@@ -62,7 +62,7 @@ Kemudian jalankan program dengan perintah:
 java -cp bin main
 ```
 
-## Identitas
+## Kontributor
 
 |   NIM    |             Nama             |
 | :------: | :--------------------------: |
