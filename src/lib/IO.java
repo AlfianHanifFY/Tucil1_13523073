@@ -67,9 +67,15 @@ public class IO {
         info[1] = -99999;
         info[2] = -99999;
         openFile();
-        info[0] = fileScanner.nextInt();
-        info[1] = fileScanner.nextInt();
-        info[2] = fileScanner.nextInt();
+        if (fileScanner.hasNextInt()) {
+            info[0] = fileScanner.nextInt();
+        }
+        if (fileScanner.hasNextInt()) {
+            info[1] = fileScanner.nextInt();
+        }
+        if (fileScanner.hasNextInt()) {
+            info[2] = fileScanner.nextInt();
+        }
         closeFile();
         for (int i = 0; i < 3; i++) {
             if (info[i] < 0) {
@@ -86,10 +92,14 @@ public class IO {
     }
 
     public String getBoardType() {
-        String type;
+        String type = "";
         openFile();
-        fileScanner.nextLine();
-        type = fileScanner.next();
+        if (fileScanner.hasNextLine()) {
+            fileScanner.nextLine();
+        }
+        if (fileScanner.hasNext()) {
+            type = fileScanner.next();
+        }
         if (type.equals("DEFAULT")) {
             System.out.println("\u001B[32m[SUCCESS]\u001B[0m"
                     + " : Konfigurasi tipe board valid...");
@@ -101,9 +111,18 @@ public class IO {
 
     public Puzzle[] getPuzzle(int amount, int M, int N) {
         Puzzle[] resultPuzzles = new Puzzle[amount];
+        Puzzle[] failPuzzles = new Puzzle[0];
+        boolean valid = true;
         openFile();
-        fileScanner.nextLine(); // Skip baris pertama (info board)
-        fileScanner.nextLine(); // Skip baris kedua (tipe board)
+
+        // Skip baris pertama (info board)
+        if (fileScanner.hasNextLine()) {
+            fileScanner.nextLine();
+        }
+        // Skip baris kedua (tipe board)
+        if (fileScanner.hasNextLine()) {
+            fileScanner.nextLine();
+        }
 
         int size = Math.max(M * N, M * N);
 
@@ -113,7 +132,8 @@ public class IO {
             if (line == null) {
                 if (!fileScanner.hasNextLine()) {
                     System.out.println("\u001B[31m[ERROR]\u001B[0m" + " : Konfigurasi Puzzle tidak valid...");
-                    break;
+                    valid = false;
+                    return failPuzzles;
                 }
                 line = fileScanner.nextLine();
             }
@@ -130,7 +150,8 @@ public class IO {
 
                 if (row > size) {
                     System.out.println("\u001B[31m[ERROR]\u001B[0m" + " : Konfigurasi Puzzle tidak valid...");
-                    break;
+                    valid = false;
+                    return resultPuzzles;
                 }
 
                 if (fileScanner.hasNextLine()) {
@@ -154,8 +175,10 @@ public class IO {
         }
 
         closeFile();
-        System.out.println("\u001B[32m[SUCCESS]\u001B[0m"
-                + " : Konfigurasi Puzzle selesai...");
+        if (valid) {
+            System.out.println("\u001B[32m[SUCCESS]\u001B[0m"
+                    + " : Konfigurasi Puzzle selesai...");
+        }
         return resultPuzzles;
     }
 
