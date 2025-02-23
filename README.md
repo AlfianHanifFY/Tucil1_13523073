@@ -1,11 +1,5 @@
 # Tucil1_13523073
 
-## Identitas
-
-|   NIM    |             Nama             |
-| :------: | :--------------------------: |
-| 13523073 | Alfian Hanif Fitria Yustanto |
-
 ## Tentang
 
 ### IQ Puzzler Pro Solver
@@ -67,3 +61,9 @@ Kemudian jalankan program dengan perintah:
 ```sh
 java -cp bin main
 ```
+
+## Identitas
+
+|   NIM    |             Nama             |
+| :------: | :--------------------------: |
+| 13523073 | Alfian Hanif Fitria Yustanto |
