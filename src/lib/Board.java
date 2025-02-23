@@ -160,7 +160,8 @@ public class Board {
         }
     }
 
-    public void solve(Puzzle[] puzzles) {
+    public long[] solve(Puzzle[] puzzles) {
+        long startTime = System.currentTimeMillis();
         int id = 0;
         int[] placedPuzzle = new int[this.P];
         boolean status;
@@ -199,12 +200,10 @@ public class Board {
 
             // backtrack kalo gagal menambah puzzle
             while (!status) {
-                // kondisi kalo puzzle pertama di backtrack
-
-                // hapus puzzle terakhir
                 if (id > 0) {
                     id--;
                 }
+                // hapus puzzle terakhir
                 int tempId = placedPuzzle[id];
                 count++;
                 clearPuzzle(puzzles[tempId].name);
@@ -263,16 +262,33 @@ public class Board {
                 }
 
             }
-        } while (!isFull() && !fail);
+        } while (isFail(puzzles) && !fail);
+        long endTimes = System.currentTimeMillis();
+        long duration = endTimes - startTime;
 
         if (fail || isFail(puzzles)) {
-            System.out.println("gagal");
+            System.out.printf(
+                    "+---------------------+\n" + "Status   : Gagal\n" + "Percobaan   : %s\n" + "Durasi   : %sms\n"
+                            + "+---------------------+" + "\n",
+                    count, duration);
         } else {
             show();
-            System.out.println("sukses");
+            System.out.printf(
+                    "\n+---------------------+\n" + "Status      : Sukses\n" + "Percobaan   : %s\n"
+                            + "Durasi      : %sms\n"
+                            + "+---------------------+\n",
+                    count, duration);
+        }
+        long[] res = new long[3];
+        res[0] = count;
+        res[1] = duration;
+        if (fail || isFail(puzzles)) {
+            res[2] = 0;
+        } else {
+            res[2] = 1;
         }
 
-        System.out.printf("Banyak kasus : %s \n", count);
+        return res;
     }
 
 }
