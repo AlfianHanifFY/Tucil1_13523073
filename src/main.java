@@ -6,7 +6,7 @@ import lib.*;
 public class main {
     static Scanner inputScanner = new Scanner(System.in);
 
-    public static void main() {
+    public static void main(String[] args) {
         System.out.print(
                 ".___________    __________                     .__           __________                   _________      .__                     \n"
                         + //
