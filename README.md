@@ -1,4 +1,8 @@
-# Tucil1_13523073
+<h1 align="center">Tugas Kecil 1 IF2211 Strategi Algoritma Penyelesaian IQ Puzzler Pro dengan Algoritma Brute Force</h1>
+
+<p align="center">
+  <img src="doc/overview.png" alt="overview image">
+</p>
 
 ## Tentang
 
@@ -39,6 +43,20 @@ IQ Puzzler Pro adalah permainan papan yang diproduksi oleh perusahaan Smart Game
 - file output .png terletak pada `/test/output/image`
 
 ## Cara Penggunaan
+
+### Clone Repositori
+
+clone repositori ini dengan command
+
+```sh
+git clone https://github.com/AlfianHanifFY/Tucil1_13523073.git
+```
+
+ubah directory
+
+```sh
+cd Tucil1_13523073
+```
 
 ### Menjalankan Program
 
