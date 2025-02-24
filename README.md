@@ -80,8 +80,27 @@ Kemudian jalankan program dengan perintah:
 java -cp bin main
 ```
 
+### Panduan penggunaan program
+
+- Masukkan input testcase berupa nama file.txt yang telah disimpan pada `test/input`
+<p align="center">
+  <img src="doc/input_tc.png" alt="overview image">
+</p>
+
+- Program akan menampilkan status konfigurasi dan hasil testcase
+<p align="center">
+  <img src="doc/hasil.png" alt="overview image">
+</p>
+
+- Hasil testcase dapat disimpan dalam bentuk `.txt` dan `.png`
+<p align="center">
+  <img src="doc/simpan.png" alt="overview image">
+</p>
+
+- Hasil yang telah berhasil disimpan dapat dilihat pada `test/output/txt` atau `test/output/image`
+
 ## Kontributor
 
-|   NIM    |             Nama             |
-| :------: | :--------------------------: |
-| 13523073 | Alfian Hanif Fitria Yustanto |
+|   NIM    |             Nama             |           Email           |
+| :------: | :--------------------------: | :-----------------------: |
+| 13523073 | Alfian Hanif Fitria Yustanto | Alfian.yustanto@gmail.com |
